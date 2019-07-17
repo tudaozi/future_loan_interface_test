@@ -12,6 +12,7 @@
 from openpyxl import load_workbook  # 导入openpyxl第三方库
 
 from scripts.handle_config import do_config
+from scripts.handle_path import DATA_COMMON_FILE_PATH
 
 
 class HandleExcel:  # 创建一个Excel处理类
@@ -47,7 +48,7 @@ class HandleExcel:  # 创建一个Excel处理类
 
 
 if __name__ == '__main__':  # 在当前路径下才可以运行
-    file_name = 'cases.xlsx'  # 指定文件
+    file_name = DATA_COMMON_FILE_PATH  # 指定文件
     my_excel = HandleExcel(file_name, 'register')  # 实例化my_excel这个对象
     print(my_excel.get_case())  # 将对象调用方法后的结果打印出来
     my_excel.write_result(2, 4, 5)

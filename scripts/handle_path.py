@@ -26,10 +26,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 获取测试用例cases目录
 CASES_DIR = os.path.join(BASE_DIR, 'cases')
+CASES_TEST_01_REGISTER_FILE_PATH = os.path.join(CASES_DIR, 'test_01_register.py')
 
 # 获取配置文件config目录
 CONFIG_DIR = os.path.join(BASE_DIR, 'config')
 CONFIG_BASE_FILE_PATH = os.path.join(CONFIG_DIR, 'base.conf')
+CONFIG_WRITE_CONFIG_FILE_PATH = os.path.join(CONFIG_DIR, 'write_config.ini')
 
 # 获取测试数据data目录
 DATA_DIR = os.path.join(BASE_DIR, 'data')
@@ -46,6 +48,7 @@ LOGS_INFO_FILE_PATH = os.path.join(LOGS_DIR, 'info.log')
 LOGS_WARNING_FILE_PATH = os.path.join(LOGS_DIR, 'warning.log')
 LOGS_ERROR_FILE_PATH = os.path.join(LOGS_DIR, 'error.log')
 LOGS_CRITICAL_FILE_PATH = os.path.join(LOGS_DIR, 'critical.log')
+LOGS_RUN_RECORD_FILE_PATH = os.path.join(LOGS_DIR, 'run_record.txt')
 
 # 获取获取测试报告reports目录
 REPORTS_DIR = os.path.join(BASE_DIR, 'reports')

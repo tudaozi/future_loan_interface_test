@@ -10,11 +10,11 @@
 """
 import unittest
 
-from scripts.handle_path import CASES_DIR
+from cases.test_01_register import ApiTest
 
 suite = unittest.TestSuite()
 loader = unittest.TestLoader()
-suite.addTest(loader.loadTestsFromTestCase(CASES_DIR.ApiTest))
+suite.addTest(loader.loadTestsFromTestCase(ApiTest))
 
 if __name__ == '__main__':
     unittest.main()

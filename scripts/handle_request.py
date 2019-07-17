@@ -12,7 +12,6 @@ import json
 
 import requests
 
-from scripts.handle_config import do_config
 from scripts.handle_log import do_logger
 
 
@@ -47,19 +46,11 @@ class HttpRequest:
 do_request = HttpRequest()
 
 if __name__ == '__main__':
-    # url = 'http://test.lemonban.com:8080/futureloan/mvc/api/member/register'
-    # params = {
-    #     'mobilephone': 13798288888,
-    #     'pwd': 123456,
-    #     'regname': '刀刀'
-    # }
-    # my_httprequest = HttpRequest()
-    # my_httprequest.send_request(method='GET', url=url, data=params)
-
-    case_list = {'case_id': 1, 'title': '使用不存在的手机号进行注册', 'url_path': '/member/register',
-                 'data': '{"mobilephone": "13786245301", "pwd": 123456, "regname": "刀刀"}', 'method': 'POST',
-                 'expected': 'code: "10001",', 'actual': None, 'result': None}
-
-    actual = do_request.send_request(method=case_list['method'],
-                                     url=do_config.get_value('request', 'default_address') + case_list['url_path'],
-                                     data=eval(case_list['data']))
+    url = 'http://test.lemonban.com:8080/futureloan/mvc/api/member/register'
+    params = {
+        'mobilephone': 13798288888,
+        'pwd': 123456,
+        'regname': '刀刀'
+    }
+    my_httprequest = HttpRequest()
+    my_httprequest.send_request(method='GET', url=url, data=params)

@@ -12,10 +12,10 @@
 import logging
 
 from scripts.handle_config import do_config
+from scripts.handle_path import LOGS_DEBUG_FILE_PATH
 
 logger_name = do_config.get_value('log', 'logger_name')
 logger_level = do_config.get_value('log', 'logger_level')
-log_filename = do_config.get_value('log', 'log_filename')
 console_leves = do_config.get_value('log', 'console_leves')
 file_level = do_config.get_value('log', 'file_level')
 simple_formatter_confing = do_config.get_value('log', 'simple_formatter')
@@ -28,7 +28,7 @@ class HandleLog:
         self.case_logger.setLevel(logger_level)
 
         console_handle = logging.StreamHandler()
-        file_handle = logging.FileHandler(log_filename, encoding='utf-8')
+        file_handle = logging.FileHandler(LOGS_DEBUG_FILE_PATH, encoding='utf-8')
 
         console_handle.setLevel(console_leves)
         file_handle.setLevel(file_level)

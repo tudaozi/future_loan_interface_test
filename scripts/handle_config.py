@@ -6,14 +6,19 @@
 @Project: python_full_stack_automation_test
 @File: test_cw0629_handle_config.py
 @Time: 2019-07-05 01:48
-@Desc: S
+@Desc: 封装配置文件
 """
-from configparser import ConfigParser  # 导入ConfigParser模块
+from configparser import ConfigParser
+
+from scripts.handle_path import CONFIG_BASE_FILE_PATH
+from scripts.handle_path import CONFIG_WRITE_CONFIG_FILE_PATH
+from scripts.handle_path import DATA_COMMON_FILE_PATH
+from scripts.handle_path import LOGS_RUN_RECORD_FILE_PATH
 
 
 class HandleConfig:  # 新建config封装类
     """
-
+    封装配置文件
     """
 
     def __init__(self, filename=None):
@@ -67,7 +72,7 @@ class HandleConfig:  # 新建config封装类
         return eval(self.get_value(section, option))
 
     @staticmethod
-    def write_config(datas, filename):
+    def write_config(data, filename):
         """
 
         :param data:
@@ -75,21 +80,21 @@ class HandleConfig:  # 新建config封装类
         :return:
         """
         config = ConfigParser()
-        for key in datas:
-            config[key] = datas[key]
+        for key in data:
+            config[key] = data[key]
 
         # 3. 保存到文件
         with open(filename, 'w') as file:
             config.write(file)
 
 
-do_config = HandleConfig("cw_0709.conf")
+do_config = HandleConfig(CONFIG_BASE_FILE_PATH)
 
 if __name__ == '__main__':
-    datas = {
-        "file path": {'cases_path': 'cases.xlsx', 'log_path': 'record_run_result.txt'},
+    data_info = {
+        "file path": {'cases_path': DATA_COMMON_FILE_PATH, 'log_path': LOGS_RUN_RECORD_FILE_PATH},
         "msg": {'success_result': 'Pass', 'fail_result': 'Fail'}
     }
-    write_filename = "write_config.ini"
-    HandleConfig.write_config(datas, write_filename)
+    write_filename = CONFIG_WRITE_CONFIG_FILE_PATH
+    HandleConfig.write_config(data_info, write_filename)
     pass

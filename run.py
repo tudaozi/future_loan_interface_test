@@ -8,10 +8,13 @@
 @Time: 2019/7/17 0:09
 @Desc: S
 """
-from interface_automation.class_0709_mysql import HTMLTestRunnerNew
-from interface_automation.class_0709_mysql.cw_0709_case_suite import suite
+import os
 
-with open('test_resule.html', 'wb')as save_file:
+from libs import HTMLTestRunnerNew
+from scripts.handle_path import REPORTS_DIR
+from scripts.handle_test_suite import suite
+
+with open(os.path.join(REPORTS_DIR, 'test_resule.html'), 'wb')as save_file:
     result = HTMLTestRunnerNew.HTMLTestRunner(stream=save_file, verbosity=2, title='四则运算测试用例报告',
                                               description='测试两数的四则运算',
                                               tester='刀刀')

@@ -13,21 +13,22 @@ import re
 import unittest
 
 from ddt import ddt, data
-from interface_automation.class_0709_mysql.cw_0709_config import do_config
-from interface_automation.class_0709_mysql.cw_0709_excel import HandleExcel
-from interface_automation.class_0709_mysql.cw_0709_log import do_logger
-from interface_automation.class_0709_mysql.cw_0709_mysql import do_mysql
-from interface_automation.class_0709_mysql.cw_0709_request import do_request
+
+from scripts.handle_config import do_config
+from scripts.handle_excel import HandleExcel
+from scripts.handle_log import do_logger
+from scripts.handle_mysql import do_mysql
+from scripts.handle_path import DATA_COMMON_FILE_PATH
+from scripts.handle_request import do_request
 
 # file = config['file path']['case_path']
-file = do_config.get_value('file path', 'case_path')
 true_result = do_config.get_value('msg', 'true_result')
 fail_result = do_config.get_value('msg', 'fail_result')
 
 
 def excel_suite():
     not_existed_tel = do_mysql.not_existed_tel(do_config.get_value('mysql', 'not_existed_tel'))
-    register_excel = HandleExcel(do_config.get_value('file path', 'case_path'), 'register')
+    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
     register_excel_cases = register_excel.get_case()
     register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
     existed_tel = do_mysql.existed_tel(do_config.get_value('mysql', 'existed_tel'),
@@ -44,7 +45,7 @@ cases_suite = excel_suite()
 
 def excel_suite1():
     not_existed_tel = do_mysql.not_existed_tel(do_config.get_value('mysql', 'not_existed_tel'))
-    register_excel = HandleExcel(do_config.get_value('file path', 'case_path'), 'login')
+    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
     register_excel_cases = register_excel.get_case()
     register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
     existed_tel = do_mysql.existed_tel(do_config.get_value('mysql', 'existed_tel'),
@@ -76,12 +77,12 @@ class ApiTest(unittest.TestCase):
 
     def tearDown(self):
         wb, ws = self.my_HandleExcel.load_excel()
-        wb.save(file)
+        wb.save(DATA_COMMON_FILE_PATH)
         wb.close()
 
     @data(*cases_suite)
     def test_register(self, case_list):
-        self.my_HandleExcel = HandleExcel(file, 'register')
+        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
@@ -104,7 +105,7 @@ class ApiTest(unittest.TestCase):
 
     @data(*cases_suite1)
     def test_login(self, case_list):
-        self.my_HandleExcel = HandleExcel(file, 'login')
+        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
