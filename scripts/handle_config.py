@@ -12,8 +12,6 @@ from configparser import ConfigParser
 
 from scripts.handle_path import CONFIG_BASE_FILE_PATH
 from scripts.handle_path import CONFIG_WRITE_CONFIG_FILE_PATH
-from scripts.handle_path import DATA_COMMON_FILE_PATH
-from scripts.handle_path import LOGS_RUN_RECORD_FILE_PATH
 
 
 class HandleConfig:  # 新建config封装类
@@ -92,9 +90,10 @@ do_config = HandleConfig(CONFIG_BASE_FILE_PATH)
 
 if __name__ == '__main__':
     data_info = {
-        "file path": {'cases_path': DATA_COMMON_FILE_PATH, 'log_path': LOGS_RUN_RECORD_FILE_PATH},
+        "file path": {'cases_path': 'DATA_COMMON_FILE_PATH', 'log_path': 'LOGS_RUN_RECORD_FILE_PATH'},
         "msg": {'success_result': 'Pass', 'fail_result': 'Fail'}
     }
     write_filename = CONFIG_WRITE_CONFIG_FILE_PATH
-    HandleConfig.write_config(data_info, write_filename)
+    # HandleConfig.write_config(data_info, write_filename)
+    do_config.write_config(data_info, write_filename)
     pass

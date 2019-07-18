@@ -32,6 +32,8 @@ CASES_TEST_01_REGISTER_FILE_PATH = os.path.join(CASES_DIR, 'test_01_register.py'
 CONFIG_DIR = os.path.join(BASE_DIR, 'config')
 CONFIG_BASE_FILE_PATH = os.path.join(CONFIG_DIR, 'base.conf')
 CONFIG_WRITE_CONFIG_FILE_PATH = os.path.join(CONFIG_DIR, 'write_config.ini')
+CONFIG_USER_INFO_FILE_PATH = os.path.join(CONFIG_DIR, 'user_info.conf')
+
 
 # 获取测试数据data目录
 DATA_DIR = os.path.join(BASE_DIR, 'data')
