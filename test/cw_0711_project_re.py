@@ -52,7 +52,7 @@ class ClassWork:
         return user_infos
 
     # 2.使用程序注册3个账号：c.思考将这3个账号信息保存到哪里?
-    def write_config(self, ):
+    def write_config(self):
         get_user_info = self.get_user_info()
         get_user_info_re = re.sub('E10ADC3949BA59ABBE56E057F20F883E', str(self.pwd), str(get_user_info))
         user_info_area_name = {'Borrower', 'Investors', 'Manager'}
