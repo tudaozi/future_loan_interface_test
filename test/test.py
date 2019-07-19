@@ -9,8 +9,9 @@
 @Desc: S
 """
 
-tels = []
-for i in range(3):
-    tel = 'Abc'
-    tels.append(tel)
-print(tels)
+user_info_two = [{'Id': 104119, 'MobilePhone': '13710967842'}, {'Id': 104120, 'MobilePhone': '13873842506'},
+                 {'Id': 104121, 'MobilePhone': '13934982715'}]
+
+user_info_one = {'Borrower', 'Investors', 'Manager'}
+user_info = dict(zip(user_info_one, user_info_two))
+print(user_info)
