@@ -23,7 +23,7 @@ class ClassWork:
 
     # 1.使用程序生成未注册的手机号
     def not_existed_tel(self):
-        not_existed_tel = do_mysql.not_existed_tel('SELECT MobilePhone FROM member WHERE MobilePhone=%s;')
+        not_existed_tel = do_mysql.not_existed_tel()
         print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
         return not_existed_tel
 
@@ -44,12 +44,13 @@ class ClassWork:
 
     # 2.使用程序注册3个账号：b.需要获取每个账号的ID（数据库获取）、手机号、密码
     def get_user_info(self):
-        user_infos = []
+        user_info = []
         for j in self.test_register():
-            user_info = do_mysql.user_info(sql=('SELECT Id,RegName,MobilePhone,Pwd FROM member WHERE MobilePhone=%s'),
-                                           virtue=j)
-            user_infos.append(user_info)
-        return user_infos
+            search_result = do_mysql.sql_search(
+                sql=('SELECT Id,RegName,MobilePhone,Pwd FROM member WHERE MobilePhone=%s'),
+                virtue=j)
+            user_info.append(search_result)
+        return user_info
 
     # 2.使用程序注册3个账号：c.思考将这3个账号信息保存到哪里?
     def write_config(self):

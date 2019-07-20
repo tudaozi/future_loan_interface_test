@@ -61,13 +61,13 @@ class HandleMySQL:
             if not self.run(sql=sql, args=(full_tel), ):
                 return full_tel
 
-    # 查询用户信息
-    def user_info(self, sql, virtue=None):
-        user_info = self.run(sql=sql, args=(virtue), )
-        if user_info:
-            return user_info
+    # SQL查询
+    def sql_search(self, sql, virtue=None):
+        search_result = self.run(sql=sql, args=(virtue), )
+        if search_result:
+            return search_result
         else:
-            return '数据库中没有该类型的手机号码'
+            return '你查询的数据不存在'
 
     def close(self):
         self.cursor.close()
@@ -77,7 +77,7 @@ class HandleMySQL:
 do_mysql = HandleMySQL()
 
 if __name__ == '__main__':
-    user_type = 1
+    user_type = 2
     not_existed_tel = do_mysql.not_existed_tel()
     print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
     existed_tel = do_mysql.existed_tel(user_type)
