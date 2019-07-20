@@ -39,22 +39,25 @@ class HandleMySQL:
             return self.cursor.fetchone()
 
     # 随机创建一个手机号码
-    def create_tel(self):
-        tel_head = random.choice(['137', '138', '139'])
+    @staticmethod
+    def create_tel():
+        tel_head = random.choice(['131', '132', '133', '134', '135', '136', '137', '138', '139'])
         tel_tail = ''.join(random.sample(string.digits, 8))
         full_tel = tel_head + tel_tail
         return full_tel
 
-    # 返回一个数据库中的
-    def existed_tel(self, sql, type=None):
+    # 返回一个数据库中的手机号码
+    def existed_tel(self, type=None):
+        sql = 'SELECT MobilePhone FROM member WHERE Type=%s LIMIT 0,1;'
         existed_tel = self.run(sql=sql, args=(type), )
         if existed_tel:
             return existed_tel['MobilePhone']
         else:
-            print('数据库中没有该类型的手机号码')
+            return '数据库中没有该类型的手机号码'
 
     # 创建一个数据库中没有的手机号码
-    def not_existed_tel(self, sql):
+    def not_existed_tel(self):
+        sql = 'SELECT MobilePhone FROM member WHERE MobilePhone=%s;'
         while True:
             full_tel = self.create_tel()
             if not self.run(sql=sql, args=(full_tel), ):
@@ -66,7 +69,7 @@ class HandleMySQL:
         if user_info:
             return user_info
         else:
-            print('数据库中没有该类型的手机号码')
+            return '数据库中没有该类型的手机号码'
 
     def close(self):
         self.cursor.close()
@@ -76,9 +79,9 @@ class HandleMySQL:
 do_mysql = HandleMySQL()
 
 if __name__ == '__main__':
-    # user_type = 1
-    not_existed_tel = do_mysql.not_existed_tel('SELECT MobilePhone FROM member WHERE MobilePhone=%s;')
+    user_type = 1
+    not_existed_tel = do_mysql.not_existed_tel()
     print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
-    # existed_tel = do_mysql.existed_tel('SELECT MobilePhone FROM member WHERE Type=%s LIMIT 0,1;', user_type)
-    # print('数据库中已存在的手机号码为：{}'.format(existed_tel))
+    existed_tel = do_mysql.existed_tel(user_type)
+    print('数据库中已存在的手机号码为：{}'.format(existed_tel))
     do_mysql.close()
