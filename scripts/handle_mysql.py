@@ -12,6 +12,7 @@
 import random
 import string
 import pymysql
+
 from scripts.handle_config import do_config
 
 
