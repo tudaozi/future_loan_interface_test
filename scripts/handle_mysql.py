@@ -45,9 +45,9 @@ class HandleMySQL:
         return full_tel
 
     # 返回一个数据库中的手机号码
-    def existed_tel(self, type=None):
+    def existed_tel(self, type=1):
         sql = 'SELECT MobilePhone FROM member WHERE Type=%s LIMIT 0,1;'
-        existed_tel = self.run(sql=sql, args=(type), )
+        existed_tel = self.run(sql=sql, args=((type),))
         if existed_tel:
             return existed_tel['MobilePhone']
         else:
@@ -77,9 +77,9 @@ class HandleMySQL:
 do_mysql = HandleMySQL()
 
 if __name__ == '__main__':
-    user_type = 2
-    not_existed_tel = do_mysql.not_existed_tel()
-    print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
-    existed_tel = do_mysql.existed_tel(user_type)
+    # user_type = 2
+    # not_existed_tel = do_mysql.not_existed_tel()
+    # print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
+    existed_tel = do_mysql.existed_tel()
     print('数据库中已存在的手机号码为：{}'.format(existed_tel))
     do_mysql.close()
