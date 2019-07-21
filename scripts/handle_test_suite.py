@@ -11,10 +11,13 @@
 import unittest
 
 from cases.test_01_register import ApiTest
+from cases import test_01_register
+from cases import test_02_login
+from cases import test_03_recharge
 
 suite = unittest.TestSuite()
 loader = unittest.TestLoader()
-suite.addTest(loader.loadTestsFromTestCase(ApiTest))
+suite.addTest(loader.loadTestsFromModule(test_03_recharge))
 
 if __name__ == '__main__':
     unittest.main()

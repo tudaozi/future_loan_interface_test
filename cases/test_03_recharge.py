@@ -1,37 +1,33 @@
-# !/usr/bin/env python
+#!/usr/bin/env python
 # coding=UTF-8
 """
 @Author: STAURL.COM
 @Contact: admin@staurl.com
-@Project: python_full_stack_automation_test
-@File: test_cw0625_case_1.py
-@Time: 2019-06-29 22:18
+@Project: future_loan_interface_test
+@File: test_03_recharge.py
+@Time: 2019-07-21 23:31
 @Desc: S
 """
 
 import json
-import re
 import unittest
 from libs.ddt import ddt, data
 from scripts.handle_config import do_config
 from scripts.handle_excel import HandleExcel
 from scripts.handle_log import do_logger
-from scripts.handle_mysql import do_mysql
 from scripts.handle_path import DATA_COMMON_FILE_PATH
 from scripts.handle_request import do_request
+from scripts.handle_context import HandleContext
 
-# file = config['file path']['case_path']
 true_result = do_config.get_value('msg', 'true_result')
 fail_result = do_config.get_value('msg', 'fail_result')
 
 
 def excel_suite():
-    not_existed_tel = do_mysql.not_existed_tel()
-    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
-    register_excel_cases = register_excel.get_case()
-    register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
-    existed_tel = do_mysql.existed_tel()
-    register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))
+    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'recharge')  # 实例化对象
+    register_excel_cases = register_excel.get_case()  # 获取excel测试用例
+    register_cases = HandleContext.not_existed_tel(
+        HandleContext.investors_user_pwd(HandleContext.investors_user_tel(str(register_excel_cases))))  # 执行参数化替换
     register_cases = eval(register_cases)
     wb, ws = register_excel.load_excel()
     wb.close()
@@ -42,12 +38,10 @@ cases_suite = excel_suite()
 
 
 def excel_suite1():
-    not_existed_tel = do_mysql.not_existed_tel()
-    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
-    register_excel_cases = register_excel.get_case()
-    register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
-    existed_tel = do_mysql.existed_tel()
-    register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))
+    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'add')  # 实例化对象
+    register_excel_cases = register_excel.get_case()  # 获取excel测试用例
+    register_cases = HandleContext.borrower_user_id(
+        HandleContext.manager_user_pwd(HandleContext.manager_user_tel(str(register_excel_cases))))  # 执行参数化替换
     register_cases = eval(register_cases)
     wb, ws = register_excel.load_excel()
     wb.close()
@@ -58,7 +52,7 @@ cases_suite1 = excel_suite1()
 
 
 @ddt
-class ApiTest(unittest.TestCase):
+class TestRecharge(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -69,7 +63,6 @@ class ApiTest(unittest.TestCase):
         do_logger.info('\n{:=^40s}\n'.format('用例执行结束'))
 
     def setUp(self):
-
         pass
 
     def tearDown(self):
@@ -78,15 +71,14 @@ class ApiTest(unittest.TestCase):
         wb.close()
 
     @data(*cases_suite)
-    def test_register(self, case_list):
-        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
+    def test_recharge(self, case_list):
+        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'recharge')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
                                                  case_list['data'])
         actual_text = request_result.text
-        actual_value = json.loads(actual_text)['code']
-        actual = 'code: "{}",'.format(actual_value)
+        actual = int(json.loads(actual_text)['code'])
         result = case_list['expected']
         msg = case_list['title']
         try:
@@ -101,15 +93,14 @@ class ApiTest(unittest.TestCase):
             raise e
 
     @data(*cases_suite1)
-    def test_login(self, case_list):
-        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
+    def test_add(self, case_list):
+        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'add')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
                                                  case_list['data'])
         actual_text = request_result.text
-        actual_value = json.loads(actual_text)['code']
-        actual = 'code: "{}",'.format(actual_value)
+        actual = int(json.loads(actual_text)['code'])
         result = case_list['expected']
         msg = case_list['title']
         try:

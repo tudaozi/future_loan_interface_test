@@ -17,6 +17,21 @@ from scripts.handle_path import CONFIG_USER_INFO_FILE_PATH
 
 
 class HandleContext():
+    """
+    @staticmethod
+    def judge_replace(pattern, repl, string):
+    def judge_get(area_name, args, type=None):
+
+    @classmethod
+    def existed_tel(cls, data):
+    def not_existed_tel(cls, data):
+    def investors_user_tel(cls, data):
+    def investors_user_pwd(cls, data):
+    def manager_user_tel(cls, data):
+    def manager_user_pwd(cls, data):
+    def borrower_user_id(cls, data):
+    def close(cls):
+    """
 
     @staticmethod
     def judge_replace(pattern, repl, string):
