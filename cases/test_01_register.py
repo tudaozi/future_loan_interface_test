@@ -11,9 +11,7 @@
 import json
 import re
 import unittest
-
-from ddt import ddt, data
-
+from libs.ddt import ddt, data
 from scripts.handle_config import do_config
 from scripts.handle_excel import HandleExcel
 from scripts.handle_log import do_logger
@@ -27,12 +25,11 @@ fail_result = do_config.get_value('msg', 'fail_result')
 
 
 def excel_suite():
-    not_existed_tel = do_mysql.not_existed_tel(do_config.get_value('mysql', 'not_existed_tel'))
+    not_existed_tel = do_mysql.not_existed_tel()
     register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
     register_excel_cases = register_excel.get_case()
     register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
-    existed_tel = do_mysql.existed_tel(do_config.get_value('mysql', 'existed_tel'),
-                                       do_config.get_int('mysql', 'existed_tel_type'))
+    existed_tel = do_mysql.existed_tel()
     register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))
     register_cases = eval(register_cases)
     wb, ws = register_excel.load_excel()
@@ -44,12 +41,11 @@ cases_suite = excel_suite()
 
 
 def excel_suite1():
-    not_existed_tel = do_mysql.not_existed_tel(do_config.get_value('mysql', 'not_existed_tel'))
+    not_existed_tel = do_mysql.not_existed_tel()
     register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
     register_excel_cases = register_excel.get_case()
     register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
-    existed_tel = do_mysql.existed_tel(do_config.get_value('mysql', 'existed_tel'),
-                                       do_config.get_int('mysql', 'existed_tel_type'))
+    existed_tel = do_mysql.existed_tel()
     register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))
     register_cases = eval(register_cases)
     wb, ws = register_excel.load_excel()
