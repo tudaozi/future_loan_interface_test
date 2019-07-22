@@ -102,3 +102,15 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.DS_Store
+.idea/dictionaries/liuzhipeng.xml
+.idea/future_loan_interface_test.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+reports/test_reports_20190722_003523.html
+reports/test_reports_20190722_005318.html
+reports/test_reports_20190722_005414.html
+reports/test_reports_20190722_011431.html
+reports/test_reports_20190722_015423.html
