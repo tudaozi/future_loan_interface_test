@@ -41,24 +41,8 @@ def excel_suite():
 cases_suite = excel_suite()
 
 
-def excel_suite1():
-    not_existed_tel = do_mysql.not_existed_tel()
-    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
-    register_excel_cases = register_excel.get_case()
-    register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
-    existed_tel = do_mysql.existed_tel()
-    register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))
-    register_cases = eval(register_cases)
-    wb, ws = register_excel.load_excel()
-    wb.close()
-    return register_cases
-
-
-cases_suite1 = excel_suite1()
-
-
 @ddt
-class ApiTest(unittest.TestCase):
+class TestRegister(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -80,29 +64,6 @@ class ApiTest(unittest.TestCase):
     @data(*cases_suite)
     def test_register(self, case_list):
         self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
-        request_result = do_request.send_request(case_list['method'],
-                                                 do_config.get_value('request', 'default_address') + case_list[
-                                                     'url_path'],
-                                                 case_list['data'])
-        actual_text = request_result.text
-        actual_value = json.loads(actual_text)['code']
-        actual = 'code: "{}",'.format(actual_value)
-        result = case_list['expected']
-        msg = case_list['title']
-        try:
-            self.assertEqual(result, actual, msg)
-            print('{},执行结果为:{}'.format(msg, true_result))
-            self.my_HandleExcel.write_result(case_list['case_id'] + 1, actual, true_result)
-            do_logger.error("{}, 执行结果为: {}".format(msg, true_result))
-        except AssertionError as e:
-            print('具体异常为{}'.format(e))
-            self.my_HandleExcel.write_result(case_list['case_id'] + 1, actual, fail_result)
-            do_logger.error("{}, 执行结果为: {},具体异常为{}".format(msg, fail_result, e))
-            raise e
-
-    @data(*cases_suite1)
-    def test_login(self, case_list):
-        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'login')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],

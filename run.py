@@ -9,10 +9,13 @@
 @Desc: S
 """
 import os
+import unittest
 from datetime import datetime
 from libs import HTMLTestRunnerNew
 from scripts.handle_path import REPORTS_DIR
-from scripts.handle_test_suite import suite
+from scripts.handle_path import CASES_DIR
+
+suite = unittest.defaultTestLoader.discover(CASES_DIR)
 
 report_name_prefix = 'test_reports_'
 report_name_suffix = '.html'
