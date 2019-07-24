@@ -62,8 +62,8 @@ class TestRecharge(unittest.TestCase):
     def test_recharge(self, case_list):
         self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'recharge')
         if case_list['check_sql']:
-            sql_data = do_mysql.sql_search(case_list['check_sql'], virtue=eval(case_list['data'])['mobilephone'])
-            self.before_leaveamount = round(float(sql_data['LeaveAmount']), 2)
+            before_sql_data = do_mysql.sql_search(case_list['check_sql'], virtue=eval(case_list['data'])['mobilephone'])
+            self.before_leaveamount = float(before_sql_data['LeaveAmount'])
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
@@ -74,8 +74,9 @@ class TestRecharge(unittest.TestCase):
         try:
             self.assertEqual(result, actual, msg)
             if case_list['check_sql']:
-                sql_data = do_mysql.sql_search(case_list['check_sql'], virtue=eval(case_list['data'])['mobilephone'])
-                after_leaveamount = round(float(sql_data['LeaveAmount']), 2)
+                after_sql_data = do_mysql.sql_search(case_list['check_sql'],
+                                                     virtue=eval(case_list['data'])['mobilephone'])
+                after_leaveamount = float(after_sql_data['LeaveAmount'])
                 true_results = after_leaveamount - self.before_leaveamount
                 self.assertEqual(eval(case_list['data'])['amount'], round(true_results, 2), msg)
             print('{},执行结果为:{}'.format(msg, true_result))
