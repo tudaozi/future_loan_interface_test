@@ -26,7 +26,7 @@ fail_result = do_config.get_value('msg', 'fail_result')
 
 def excel_suite():
     register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'add')  # 实例化对象
-    register_excel_cases = register_excel.get_case()  # 获取excel测试用例
+    register_excel_cases = register_excel.get_cases()  # 获取excel测试用例
     register_cases = HandleContext.borrower_user_id(
         HandleContext.manager_user_pwd(HandleContext.manager_user_tel(str(register_excel_cases))))  # 执行参数化替换
     register_cases = eval(register_cases)

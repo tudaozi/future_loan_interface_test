@@ -4,8 +4,8 @@
 @Author: STAURL.COM
 @Contact: admin@staurl.com
 @Project: future_loan_interface_test
-@File: test_03_recharge.py
-@Time: 2019-07-21 23:31
+@File: test_05_invest.py
+@Time: 2019-07-27 23:48
 @Desc: S
 """
 
@@ -25,10 +25,10 @@ fail_result = do_config.get_value('msg', 'fail_result')
 
 
 def excel_suite():
-    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'recharge')  # 实例化对象
+    register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'invest')  # 实例化对象
     register_excel_cases = register_excel.get_cases()  # 获取excel测试用例
-    register_cases = HandleContext.not_existed_tel(
-        HandleContext.investors_user_pwd(HandleContext.investors_user_tel(str(register_excel_cases))))  # 执行参数化替换
+    register_cases = HandleContext.borrower_user_id(
+        HandleContext.manager_user_pwd(HandleContext.manager_user_tel(str(register_excel_cases))))  # 执行参数化替换
     register_cases = eval(register_cases)
     wb, ws = register_excel.load_excel()
     wb.close()
@@ -39,7 +39,7 @@ cases_suite = excel_suite()
 
 
 @ddt
-class TestRecharge(unittest.TestCase):
+class TestInvest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -59,26 +59,22 @@ class TestRecharge(unittest.TestCase):
         do_request.request_close()
 
     @data(*cases_suite)
-    def test_recharge(self, case_list):
-        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'recharge')
-        if case_list['check_sql']:
-            before_sql_data = do_mysql.sql_search(case_list['check_sql'], virtue=eval(case_list['data'])['mobilephone'])
-            self.before_leaveamount = float(before_sql_data['LeaveAmount'])
+    def test_invest(self, case_list):
+        self.my_HandleExcel = HandleExcel(DATA_COMMON_FILE_PATH, 'invest')
         request_result = do_request.send_request(case_list['method'],
                                                  do_config.get_value('request', 'default_address') + case_list[
                                                      'url_path'],
                                                  case_list['data'])
+        actual_text = request_result.text
+        if do_config.get_value('request', 'add_success_msg') in actual_text and case_list['check_sql']:
+            loan_id_sql = do_mysql.sql_search(case_list['check_sql'], virtue=eval(case_list['data'])['memberId'])
+            loan_id_value = int(loan_id_sql['Id'])
+            setattr(HandleContext, 'loan_id', loan_id_value)
         actual = int(request_result.json().get('code'))
         result = case_list['expected']
         msg = case_list['title']
         try:
             self.assertEqual(result, actual, msg)
-            if case_list['check_sql']:
-                after_sql_data = do_mysql.sql_search(case_list['check_sql'],
-                                                     virtue=eval(case_list['data'])['mobilephone'])
-                after_leaveamount = float(after_sql_data['LeaveAmount'])
-                true_results = after_leaveamount - self.before_leaveamount
-                self.assertEqual(eval(case_list['data'])['amount'], round(true_results, 2), msg)
             print('{},执行结果为:{}'.format(msg, true_result))
             self.my_HandleExcel.write_result(case_list['case_id'] + 1, actual, true_result)
             do_logger.error("{}, 执行结果为: {}".format(msg, true_result))

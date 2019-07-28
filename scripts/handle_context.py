@@ -116,6 +116,13 @@ class HandleContext():
         return context_data
 
     @classmethod
+    def loan_id(cls, data):
+        loan_id_pattern = r'\${loan_id}'
+        loan_id_repl = str(getattr(cls, "loan_id"))
+        context_data = cls.judge_replace(loan_id_pattern, loan_id_repl, data)
+        return context_data
+
+    @classmethod
     def close(cls):
         do_mysql.close()
 

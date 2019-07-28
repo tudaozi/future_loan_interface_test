@@ -27,6 +27,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 获取测试用例cases目录
 CASES_DIR = os.path.join(BASE_DIR, 'cases')
 CASES_TEST_01_REGISTER_FILE_PATH = os.path.join(CASES_DIR, 'test_01_register.py')
+CASES_TEST_02_LOGIN_FILE_PATH = os.path.join(CASES_DIR, 'test_02_login.py')
+CASES_TEST_03_RECHARGE_FILE_PATH = os.path.join(CASES_DIR, 'test_03_recharge.py')
+CASES_TEST_04_ADD_FILE_PATH = os.path.join(CASES_DIR, 'test_04_add.py')
+CASES_TEST_05_INVEST_FILE_PATH = os.path.join(CASES_DIR, 'test_05_invest.py')
 
 # 获取配置文件config目录
 CONFIG_DIR = os.path.join(BASE_DIR, 'config')
@@ -34,10 +38,10 @@ CONFIG_BASE_FILE_PATH = os.path.join(CONFIG_DIR, 'base.conf')
 CONFIG_WRITE_CONFIG_FILE_PATH = os.path.join(CONFIG_DIR, 'write_config.ini')
 CONFIG_USER_INFO_FILE_PATH = os.path.join(CONFIG_DIR, 'user_info.conf')
 
-
 # 获取测试数据data目录
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 DATA_COMMON_FILE_PATH = os.path.join(DATA_DIR, 'common.xlsx')
+DATA_TEST_COMMON_FILE_PATH = os.path.join(DATA_DIR, 'test_common.xlsx')
 
 # 获取第三方库文件libs目录
 LIBS_DIR = os.path.join(BASE_DIR, 'libs')
@@ -60,6 +64,7 @@ SCRIPTS_DIR = os.path.join(BASE_DIR, 'scripts')
 HANDLE_CONFIG_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_config.py')
 HANDLE_CONTEXT_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_context.py')
 HANDLE_EXCEL_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_excel.py')
+HANDLE_TEST_EXCEL_FILE_PATH = os.path.join(SCRIPTS_DIR, 'test_handle_excel.py')
 HANDLE_LOG_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_log.py')
 HANDLE_MYSQL_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_mysql.py')
 HANDLE_REQUEST_FILE_PATH = os.path.join(SCRIPTS_DIR, 'handle_request.py')

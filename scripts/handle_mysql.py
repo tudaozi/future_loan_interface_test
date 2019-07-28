@@ -80,6 +80,8 @@ if __name__ == '__main__':
     # user_type = 2
     # not_existed_tel = do_mysql.not_existed_tel()
     # print('数据库中不存在的手机号码为：{}'.format(not_existed_tel))
-    existed_tel = do_mysql.existed_tel()
-    print('数据库中已存在的手机号码为：{}'.format(existed_tel))
+    # existed_tel = do_mysql.existed_tel()
+    # print('数据库中已存在的手机号码为：{}'.format(existed_tel))
+    sql = 'SELECT Id FROM future.loan WHERE MemberID=97 ORDER BY CreateTime DESC LIMIT 0,1'
+    my_sql = do_mysql.sql_search(sql)
     do_mysql.close()

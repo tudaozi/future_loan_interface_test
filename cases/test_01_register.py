@@ -28,7 +28,7 @@ fail_result = do_config.get_value('msg', 'fail_result')
 def excel_suite():
     not_existed_tel = do_mysql.not_existed_tel()
     register_excel = HandleExcel(DATA_COMMON_FILE_PATH, 'register')
-    register_excel_cases = register_excel.get_case()
+    register_excel_cases = register_excel.get_cases()
     register_excel_re = re.sub(r'\${not_existed_tel}', not_existed_tel, str(register_excel_cases))
     existed_tel = do_mysql.existed_tel()
     register_cases = re.sub(r'\${existed_tel}', existed_tel, str(register_excel_re))

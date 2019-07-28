@@ -18,32 +18,33 @@ class HandleExcel:  # 创建一个Excel处理类
     def __init__(self, filename, sheetname=None):  # 初始化类，并设置两个参数
         self.filename = filename
         self.sheetname = sheetname
+        self.wb = load_workbook(filename)
 
-    def load_excel(self):
-        wb = load_workbook(self.filename)  # 加载Excel文件
+    def active_sheet(self):
         if self.sheetname is None:  # 判断是否有指定表单，如果没有使用打开Excel文件的激活表单，如果有就是用指定名称的表单
-            ws = wb.active
+            ws = self.wb.active
         else:
-            ws = wb[self.sheetname]
-        return wb, ws
+            ws = self.wb[self.sheetname]
+        return ws
 
     def get_cases(self):  # 获取行-测试用例
-        wb, ws = self.load_excel()
+        ws = self.active_sheet()
         cases_list = []  # 创建一个空的用例列表
         cases_title_entity = tuple(ws.iter_rows(max_row=1, values_only=True))
         cases_title = cases_title_entity[0]
         for cases_entity in tuple(ws.iter_rows(min_row=2, values_only=True)):
             cases_list.append(dict(zip(cases_title, cases_entity)))
-        wb.close()
         return cases_list  # 将用例列表返回给当前函数
 
     def write_result(self, row, actual, result):
-        wb, ws = self.load_excel()
+        ws = self.active_sheet()
         if isinstance(row, int) and (2 <= row <= ws.max_row):
             ws.cell(row=row, column=do_config.get_int('excel', 'actual_col'), value=actual)
             ws.cell(row=row, column=do_config.get_int('excel', 'result_col'), value=result)
-            wb.save(self.filename)
-            wb.close()
+            self.wb.save(self.filename)
+
+    def close_excel(self):
+        self.wb.close()
 
 
 if __name__ == '__main__':  # 在当前路径下才可以运行
@@ -51,3 +52,4 @@ if __name__ == '__main__':  # 在当前路径下才可以运行
     my_excel = HandleExcel(file_name, 'register')  # 实例化my_excel这个对象
     print(my_excel.get_cases())  # 将对象调用方法后的结果打印出来
     my_excel.write_result(2, 4, 5)
+    my_excel.close_excel()
