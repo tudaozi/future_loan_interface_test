@@ -9,14 +9,17 @@
 @Desc: S
 """
 
+import re
 
-# from test.test1 import test222
-class Test2:
+
+class Context:
     @classmethod
-    def test22(cls):
-        test222 = getattr(cls, "test222")
-        print(test222)
-        return test222
-
-
-Test2.test22()
+    def mobilephone(cls, data):
+        pattern = r'\${not_existed_tel}'
+        repl = getattr(cls, 'existed')
+        string = data
+        if re.search(pattern, string):
+            new_data = re.sub(pattern, repl, string)
+            return new_data
+        else:
+            return string

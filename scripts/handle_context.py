@@ -92,9 +92,23 @@ class HandleContext():
         return context_data
 
     @classmethod
+    def investors_user_id(cls, data):
+        investors_user_id_pattern = r'\${investors_user_id}'
+        context_data = cls.judge_replace(investors_user_id_pattern, cls.judge_get('Investors', 'id'), data)
+        return context_data
+
+    @classmethod
     def investors_user_pwd(cls, data):
         investors_user_pwd_pattern = r'\${investors_user_pwd}'
         context_data = cls.judge_replace(investors_user_pwd_pattern, cls.judge_get('Investors', 'pwd'), data)
+        return context_data
+
+    @classmethod
+    def not_existed_user_id(cls, data):
+        not_existed_user_id_pattern = r'\${not_existed_user_id}'
+        sql = 'SELECT MAX(Id) AS mid FROM member;'
+        not_existed_user_id = str(do_mysql.run(sql=sql)["mid"] + 1)
+        context_data = cls.judge_replace(not_existed_user_id_pattern, not_existed_user_id, data)
         return context_data
 
     @classmethod
@@ -118,8 +132,19 @@ class HandleContext():
     @classmethod
     def loan_id(cls, data):
         loan_id_pattern = r'\${loan_id}'
-        loan_id_repl = str(getattr(cls, "loan_id"))
-        context_data = cls.judge_replace(loan_id_pattern, loan_id_repl, data)
+        if re.search(loan_id_pattern, data):
+            loan_id_repl = str(getattr(cls, "loan_idw"))
+            context_data = re.sub(loan_id_pattern, loan_id_repl, data)
+            return context_data
+        else:
+            return data
+
+    @classmethod
+    def not_exitsed_loan_id(cls, data):
+        not_exitsed_loan_id_pattern = r'\${not_existed_loan_id}'
+        sql = "SELECT MAX(Id) AS total_loan_id FROM loan LIMIT 0, 1;"
+        not_exitsed_loan_id = str(do_mysql.run(sql)["total_loan_id"] + 1)
+        context_data = cls.judge_replace(not_exitsed_loan_id_pattern, not_exitsed_loan_id, data)
         return context_data
 
     @classmethod
@@ -128,17 +153,19 @@ class HandleContext():
 
 
 if __name__ == '__main__':
-    one = HandleContext.not_existed_tel('{"mobilephone": "${not_existed_tel}", "pwd": 123456, "regname": "刀刀"}')
-    print(one)
-    two = HandleContext.existed_tel('{"mobilephone": "${existed_tel}", "pwd": 123456, "regname": "刀刀"}')
-    print(two)
-    three = HandleContext.investors_user_pwd(
-        HandleContext.investors_user_tel('{"mobilephone": "${investors_user_tel}", "pwd": "${investors_user_pwd}"}'))
-    print(three)
-    four = HandleContext.manager_user_pwd(
-        HandleContext.manager_user_tel('{"mobilephone": "${manager_user_tel}", "pwd": "${manager_user_pwd}"}'))
+    # one = HandleContext.not_existed_tel('{"mobilephone": "${not_existed_tel}", "pwd": 123456, "regname": "刀刀"}')
+    # print(one)
+    # two = HandleContext.existed_tel('{"mobilephone": "${existed_tel}", "pwd": 123456, "regname": "刀刀"}')
+    # print(two)
+    # three = HandleContext.investors_user_pwd(
+    #     HandleContext.investors_user_tel('{"mobilephone": "${investors_user_tel}", "pwd": "${investors_user_pwd}"}'))
+    # print(three)
+    # four = HandleContext.manager_user_pwd(
+    #     HandleContext.manager_user_tel('{"mobilephone": "${manager_user_tel}", "pwd": "${manager_user_pwd}"}'))
+    # print(four)
+    # five = HandleContext.borrower_user_id(
+    #     '{"memberId": "${borrower_user_id}", "title": "试试人品行不行，介个2W玩玩", "amount": 20000,"loanRate":12.0,"loanTerm":3,"loanDateTpye":0,"repaymemtWay":11,"biddingDays":5}')
+    # print(five)
+    four = HandleContext.not_exitsed_loan_id('{"loanId":${not_existed_loan_id},"amount":500}')
     print(four)
-    five = HandleContext.borrower_user_id(
-        '{"memberId": "${borrower_user_id}", "title": "试试人品行不行，介个2W玩玩", "amount": 20000,"loanRate":12.0,"loanTerm":3,"loanDateTpye":0,"repaymemtWay":11,"biddingDays":5}')
-    print(five)
     HandleContext.close()
